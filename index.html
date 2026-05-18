@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Hiccupviews — Event photography, portraits, brand campaigns, festivals, and corporate media coverage. Vivid collections from a different perspective.">
+  <title>Hiccupviews — Photography &amp; Media</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/nav.css">
+  <link rel="stylesheet" href="css/hero.css">
+  <link rel="stylesheet" href="css/carousel.css">
+  <link rel="stylesheet" href="css/lightbox.css">
+</head>
+<body>
+
+  <!-- ======================================================
+       NAVIGATION
+       ====================================================== -->
+
+  <nav class="site-nav" role="navigation" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo">Hiccupviews</a>
+
+    <div class="nav-links">
+      <a href="portfolio.html">Portfolio</a>
+      <a href="services.html">Services</a>
+      <a href="about.html">About</a>
+      <a href="contact.html" class="nav-cta">Book a Shoot</a>
+    </div>
+
+    <button class="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+  </nav>
+
+  <!-- Mobile overlay -->
+  <div class="nav-mobile-overlay" role="dialog" aria-label="Mobile navigation">
+    <a href="portfolio.html">Portfolio</a>
+    <a href="services.html">Services</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <div class="nav-mobile-social">
+      <a href="#" aria-label="Instagram">Instagram</a>
+      <a href="mailto:hello@hiccupviews.com">Email</a>
+    </div>
+  </div>
+
+  <!-- ======================================================
+       HERO
+       ====================================================== -->
+
+  <section class="hero" aria-label="Hero">
+    <div class="hero-bg" role="img" aria-label="Event photography background"></div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content container">
+      <p class="hero-eyebrow">Photography &amp; Media</p>
+      <h1 class="hero-title">Hiccup<br>views</h1>
+      <p class="hero-subtitle">Vivid collections from a different perspective</p>
+      <div class="hero-actions">
+        <a href="portfolio.html" class="btn btn--primary">View Portfolio</a>
+        <a href="contact.html" class="btn btn--outline">Book a Shoot</a>
+      </div>
+    </div>
+
+    <div class="hero-scroll" aria-hidden="true">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       3D SPACE CAROUSEL — GAMIFIED
+       ====================================================== -->
+
+  <section class="space-carousel" id="space-carousel" aria-label="Featured albums">
+
+    <!-- Starfield canvas -->
+    <canvas id="starfield-canvas" aria-hidden="true"></canvas>
+
+    <!-- Nebula glow layer -->
+    <div class="nebula" id="nebula" aria-hidden="true"></div>
+
+    <!-- Particle layer -->
+    <div class="particle-layer" id="particle-layer" aria-hidden="true"></div>
+
+    <!-- ===== HUD BAR ===== -->
+    <div class="hud-bar">
+
+      <div class="hud-group">
+        <span class="hud-label">Explorer Score</span>
+        <span class="hud-points" id="hud-points">0000</span>
+      </div>
+
+      <div class="hud-group hud-group--center">
+        <span class="hud-title-text">Album&nbsp;Collection</span>
+      </div>
+
+      <div class="hud-group" style="align-items:flex-end;">
+        <span class="hud-label">Discovered</span>
+        <div style="display:flex; align-items:center; gap:0.6rem;">
+          <div class="hud-dots" aria-label="Discovery progress">
+            <span class="hud-dot" data-index="0" title="Amsterdam Night Festival"></span>
+            <span class="hud-dot" data-index="1" title="Summer Rooftop Party"></span>
+            <span class="hud-dot" data-index="2" title="Portrait Series"></span>
+            <span class="hud-dot" data-index="3" title="Corporate Event Coverage"></span>
+            <span class="hud-dot" data-index="4" title="Brand Campaign Shoot"></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ===== 3D STAGE ===== -->
+    <div class="stage-wrap">
+      <div class="scene-3d" aria-label="3D album carousel">
+        <div class="track-3d" id="track-3d">
+          <!-- Cards injected by carousel.js -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ===== INFO PANEL ===== -->
+    <div class="card-info-panel">
+
+      <button class="space-nav-btn" id="btn-prev" aria-label="Previous album">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        PREV
+      </button>
+
+      <div class="card-info-content">
+        <div class="card-info-category" id="info-category">—</div>
+        <h3 class="card-info-title" id="info-title" aria-live="polite"></h3>
+        <div class="card-info-meta">
+          <span class="card-info-count" id="info-count">— PHOTOS</span>
+          <div class="card-info-stars" id="info-stars" aria-label="Difficulty rating"></div>
+        </div>
+        <a class="space-launch-btn" id="launch-btn" href="portfolio.html" aria-label="Explore this album">
+          <span>EXPLORE ALBUM</span>
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </a>
+      </div>
+
+      <button class="space-nav-btn" id="btn-next" aria-label="Next album">
+        NEXT
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+
+    </div>
+
+    <!-- ===== ACHIEVEMENT TOAST ===== -->
+    <div class="achievement-toast" id="achievement-toast" role="alert" aria-live="assertive">
+      <div class="achievement-icon">★</div>
+      <div class="achievement-text">
+        <span class="achievement-label">Discovered</span>
+        <span class="achievement-name" id="achievement-name"></span>
+      </div>
+    </div>
+
+    <!-- Keyboard hint -->
+    <p class="keyboard-hint" aria-hidden="true">
+      <span class="key">←</span>
+      <span class="key">→</span>
+      &nbsp;navigate &nbsp;·&nbsp; click active card to open
+    </p>
+
+  </section>
+
+  <!-- ======================================================
+       SERVICES TEASER
+       ====================================================== -->
+
+  <section class="section section--light" aria-label="What we do">
+    <div class="container">
+      <div class="featured-intro">
+        <div class="featured-intro-text">
+          <p class="section-label reveal">What We Do</p>
+          <h2 class="reveal reveal-delay-1">Photography for every<br>moment that matters</h2>
+        </div>
+        <a href="services.html" class="btn btn--dark reveal reveal-delay-2">All Services</a>
+      </div>
+
+      <div class="services-grid" style="display:grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 0; border-left: 1px solid rgba(0,0,0,0.08);">
+
+        <div class="service-pill reveal" style="padding: 2rem; border-right: 1px solid rgba(0,0,0,0.08); border-bottom: 1px solid rgba(0,0,0,0.08);">
+          <div style="width:32px; height:32px; border:1px solid #c8b89a; display:flex; align-items:center; justify-content:center; margin-bottom:1rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8b89a" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M8.56 2.75c4.37 6.03 6.02 9.42 8.03 17.72m2.54-15.38c-3.72 4.35-8.94 5.66-16.88 5.85m19.5 1.9c-3.5-.93-6.63-.82-8.94 0-2.58.92-5.01 2.86-7.44 6.32"/></svg>
+          </div>
+          <h4 style="font-family:var(--font-serif); font-size:1.1rem; color:var(--black); margin-bottom:0.5rem;">Events</h4>
+          <p style="font-size:0.82rem; color:#666; line-height:1.7;">Concerts, parties, cultural gatherings</p>
+        </div>
+
+        <div class="service-pill reveal reveal-delay-1" style="padding: 2rem; border-right: 1px solid rgba(0,0,0,0.08); border-bottom: 1px solid rgba(0,0,0,0.08);">
+          <div style="width:32px; height:32px; border:1px solid #c8b89a; display:flex; align-items:center; justify-content:center; margin-bottom:1rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8b89a" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          </div>
+          <h4 style="font-family:var(--font-serif); font-size:1.1rem; color:var(--black); margin-bottom:0.5rem;">Portraits</h4>
+          <p style="font-size:0.82rem; color:#666; line-height:1.7;">Individual &amp; editorial portraits</p>
+        </div>
+
+        <div class="service-pill reveal reveal-delay-2" style="padding: 2rem; border-right: 1px solid rgba(0,0,0,0.08); border-bottom: 1px solid rgba(0,0,0,0.08);">
+          <div style="width:32px; height:32px; border:1px solid #c8b89a; display:flex; align-items:center; justify-content:center; margin-bottom:1rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8b89a" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+          </div>
+          <h4 style="font-family:var(--font-serif); font-size:1.1rem; color:var(--black); margin-bottom:0.5rem;">Corporate</h4>
+          <p style="font-size:0.82rem; color:#666; line-height:1.7;">Conferences, launches, meetings</p>
+        </div>
+
+        <div class="service-pill reveal reveal-delay-3" style="padding: 2rem; border-right: 1px solid rgba(0,0,0,0.08); border-bottom: 1px solid rgba(0,0,0,0.08);">
+          <div style="width:32px; height:32px; border:1px solid #c8b89a; display:flex; align-items:center; justify-content:center; margin-bottom:1rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8b89a" stroke-width="1.5"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+          </div>
+          <h4 style="font-family:var(--font-serif); font-size:1.1rem; color:var(--black); margin-bottom:0.5rem;">Brand</h4>
+          <p style="font-size:0.82rem; color:#666; line-height:1.7;">Campaigns, products, identity</p>
+        </div>
+
+        <div class="service-pill reveal reveal-delay-4" style="padding: 2rem; border-right: 1px solid rgba(0,0,0,0.08); border-bottom: 1px solid rgba(0,0,0,0.08);">
+          <div style="width:32px; height:32px; border:1px solid #c8b89a; display:flex; align-items:center; justify-content:center; margin-bottom:1rem;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c8b89a" stroke-width="1.5"><path d="M3 18v-6a9 9 0 0 1 18 0v6"/><path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z"/><path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z"/></svg>
+          </div>
+          <h4 style="font-family:var(--font-serif); font-size:1.1rem; color:var(--black); margin-bottom:0.5rem;">Festivals</h4>
+          <p style="font-size:0.82rem; color:#666; line-height:1.7;">Multi-day festival coverage</p>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       CTA STRIP
+       ====================================================== -->
+
+  <section class="section" aria-label="Call to action" style="text-align:center; padding-block: clamp(5rem, 10vw, 9rem);">
+    <div class="container">
+      <p class="section-label reveal">Let's Create</p>
+      <h2 class="reveal reveal-delay-1" style="max-width: 600px; margin-inline: auto; margin-bottom: 1.5rem;">
+        Ready to tell your story through images?
+      </h2>
+      <p class="reveal reveal-delay-2" style="max-width: 440px; margin-inline: auto; margin-bottom: 2.5rem;">
+        Whether it's an intimate portrait or a full festival — we're here to capture it.
+      </p>
+      <div class="reveal reveal-delay-3" style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+        <a href="contact.html" class="btn btn--primary">Book a Shoot</a>
+        <a href="about.html" class="btn btn--outline">Learn About Us</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================
+       FOOTER
+       ====================================================== -->
+
+  <footer class="site-footer container">
+    <a href="index.html" class="footer-logo">Hiccupviews</a>
+    <nav class="footer-links" aria-label="Footer navigation">
+      <a href="portfolio.html">Portfolio</a>
+      <a href="services.html">Services</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+    <div class="footer-social">
+      <a href="#" aria-label="Instagram">Instagram</a>
+      <a href="mailto:hello@hiccupviews.com">hello@hiccupviews.com</a>
+    </div>
+    <p class="footer-copy">&copy; 2026 Hiccupviews. All rights reserved.</p>
+  </footer>
+
+  <!-- JS -->
+  <script src="js/nav.js" defer></script>
+  <script src="js/carousel.js" defer></script>
+  <script src="js/lightbox.js" defer></script>
+  <script src="js/main.js" defer></script>
+  <script type="module" src="js/animations.js"></script>
+
+</body>
+</html>
