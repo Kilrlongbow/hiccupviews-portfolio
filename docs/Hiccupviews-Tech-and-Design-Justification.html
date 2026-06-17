@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Hiccupviews — Technical &amp; Design Justification</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap');
+
+  :root {
+    --ink: #1a1a1a;
+    --muted: #555;
+    --soft: #777;
+    --accent: #a8824e;
+    --surface: #f5f4f0;
+    --line: rgba(10,10,10,0.12);
+    --serif: 'Cormorant Garamond', Georgia, serif;
+    --sans: 'Inter', -apple-system, system-ui, sans-serif;
+  }
+
+  @page { size: A4; margin: 20mm 18mm; }
+
+  * { box-sizing: border-box; }
+
+  body {
+    font-family: var(--sans);
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1.6;
+    font-size: 10.5pt;
+    margin: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  h1, h2, h3, h4 { font-family: var(--serif); font-weight: 400; line-height: 1.15; color: var(--ink); }
+
+  /* Cover */
+  .cover {
+    min-height: 247mm;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    page-break-after: always;
+  }
+  .cover .eyebrow {
+    font-family: var(--sans);
+    font-size: 8.5pt;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+  }
+  .cover h1 { font-size: 40pt; font-weight: 300; margin: 0 0 1rem; letter-spacing: 0.01em; }
+  .cover .sub { font-family: var(--serif); font-style: italic; font-size: 16pt; color: var(--muted); margin-bottom: 3rem; }
+  .cover .divider { width: 48px; height: 2px; background: var(--accent); margin-bottom: 2rem; }
+  .cover .meta { font-size: 9.5pt; color: var(--soft); line-height: 1.9; }
+  .cover .meta strong { color: var(--ink); font-weight: 500; }
+
+  section { page-break-inside: auto; }
+
+  h2 {
+    font-size: 19pt;
+    font-weight: 300;
+    margin: 2.4rem 0 0.4rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+  h2 .num { color: var(--accent); font-size: 13pt; margin-right: 0.6rem; }
+  h3 { font-size: 13pt; margin: 1.4rem 0 0.3rem; }
+
+  p { margin: 0 0 0.7rem; color: var(--muted); }
+  p.lead { color: var(--ink); font-size: 11.5pt; }
+  strong { color: var(--ink); font-weight: 500; }
+
+  ul { margin: 0 0 0.8rem; padding-left: 1.1rem; color: var(--muted); }
+  li { margin-bottom: 0.35rem; }
+
+  table { width: 100%; border-collapse: collapse; margin: 0.6rem 0 1rem; font-size: 9.5pt; }
+  th, td { text-align: left; padding: 0.5rem 0.6rem; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { font-family: var(--sans); font-weight: 600; font-size: 8pt; letter-spacing: 0.08em; text-transform: uppercase; color: var(--ink); }
+  td { color: var(--muted); }
+  td strong { color: var(--ink); }
+
+  .callout {
+    background: var(--surface);
+    border-left: 2px solid var(--accent);
+    padding: 0.9rem 1.1rem;
+    margin: 1rem 0;
+    font-size: 10pt;
+  }
+  .callout p:last-child { margin-bottom: 0; }
+
+  .avoid { page-break-inside: avoid; }
+  footer.docfoot { margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--line); font-size: 8.5pt; color: var(--soft); }
+</style>
+</head>
+<body>
+
+<div class="cover">
+  <p class="eyebrow">Photography &amp; Media · Portfolio Website</p>
+  <h1>Hiccupviews</h1>
+  <p class="sub">Technical &amp; Design Justification</p>
+  <div class="divider"></div>
+  <p class="meta">
+    <strong>Project:</strong> Hiccupviews portfolio website (V2)<br/>
+    <strong>Course:</strong> Fontys — Media Creation<br/>
+    <strong>Document:</strong> Tech stack overview &amp; design rationale<br/>
+    <strong>Date:</strong> June 2026
+  </p>
+</div>
+
+<section>
+  <h2><span class="num">01</span>Introduction</h2>
+  <p class="lead">Hiccupviews is a photography and media brand. This website is its digital
+  storefront — a place to present work, communicate the services offered, and convert
+  visitors into booking enquiries.</p>
+  <p>This document explains the <strong>technology stack</strong> behind the site and
+  <strong>justifies the reasoning</strong> behind the technical and design decisions. The
+  guiding principle throughout was simple: the photography is the product, so every choice —
+  from the framework to the colour palette — should get out of its way and let the images
+  carry the experience.</p>
+  <p>The site is a modern single-page application (SPA): a fast, app-like front end that loads
+  once and then navigates instantly between pages, with the visual polish (animation,
+  interactive hero, lightbox viewer) expected of a creative portfolio in 2026.</p>
+</section>
+
+<section>
+  <h2><span class="num">02</span>Technology Stack</h2>
+  <p>The stack is deliberately lean and industry-standard. Each tool earns its place; nothing
+  is included "just in case."</p>
+
+  <table>
+    <thead>
+      <tr><th>Technology</th><th>Version</th><th>Role</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>React</strong></td><td>18.3</td><td>UI library — component-based interface</td></tr>
+      <tr><td><strong>TypeScript</strong></td><td>5.6</td><td>Typed JavaScript — safer, self-documenting code</td></tr>
+      <tr><td><strong>Vite</strong></td><td>5.4</td><td>Build tool &amp; dev server</td></tr>
+      <tr><td><strong>React Router</strong></td><td>6.28</td><td>Client-side routing between pages</td></tr>
+      <tr><td><strong>Framer Motion</strong></td><td>12.38</td><td>Animation engine (scroll hero, transitions)</td></tr>
+      <tr><td><strong>Tailwind CSS</strong></td><td>3.4</td><td>Utility classes (used selectively)</td></tr>
+      <tr><td><strong>PostCSS + Autoprefixer</strong></td><td>8.4 / 10.4</td><td>CSS processing &amp; vendor prefixing</td></tr>
+      <tr><td><strong>lucide-react</strong></td><td>0.460</td><td>Lightweight icon set</td></tr>
+      <tr><td>Custom CSS design system</td><td>—</td><td>Hand-built tokens &amp; component styles</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Why these choices</h3>
+
+  <p><strong>React</strong> is the most widely used front-end library, which makes it a safe,
+  future-proof, and highly employable skill to build on. Its component model lets the interface
+  be split into small, reusable, testable pieces — the navigation bar, footer, photo lightbox
+  and animated hero are each self-contained components reused across the site.</p>
+
+  <p><strong>TypeScript</strong> adds a type layer on top of JavaScript. For a project with
+  structured data (photo collections, hero slides, album metadata), types catch mistakes before
+  the site is ever opened in a browser and act as living documentation. The whole project
+  compiles type-clean as part of every production build.</p>
+
+  <p><strong>Vite</strong> was chosen over older bundlers (such as Create React App / webpack)
+  for speed. It offers near-instant hot-reload during development and produces a small,
+  optimised, tree-shaken production bundle. A full production build completes in under two
+  seconds, which keeps the iteration loop tight.</p>
+
+  <p><strong>React Router</strong> provides client-side navigation between the Home, Portfolio,
+  Album, Services, About and Contact pages. Visitors move between pages instantly with no full
+  page reload, giving the site an app-like feel while keeping clean, shareable URLs.</p>
+
+  <p><strong>Framer Motion</strong> powers the signature scroll-driven hero animation and the
+  page micro-interactions. It is a declarative, physics-based animation library — animations are
+  described as states rather than hand-written timing code, which keeps complex motion (the
+  scatter → line → circle → arc morph) maintainable.</p>
+
+  <p><strong>Tailwind CSS</strong> is used <em>selectively</em> for utility styling, with its
+  global reset deliberately disabled so it never clobbers the hand-built design system. This is
+  a pragmatic hybrid: Tailwind for quick layout utilities, bespoke CSS for the brand's distinct
+  visual identity.</p>
+
+  <div class="callout">
+    <p><strong>A note on restraint.</strong> A photography site does not need a heavy framework
+    like Next.js, a CMS, or a component library such as Material UI. Those would add weight,
+    opinionated styling, and maintenance overhead the project does not need. The chosen stack is
+    light enough to host as static files on any CDN, yet powerful enough for rich interaction.</p>
+  </div>
+</section>
+
+<section class="avoid">
+  <h2><span class="num">03</span>Architecture &amp; Structure</h2>
+  <p>The codebase is organised by responsibility, which keeps it easy to navigate and extend:</p>
+  <ul>
+    <li><strong>Pages</strong> — one component per route (Home, Portfolio, Album, Services, About, Contact).</li>
+    <li><strong>Components</strong> — shared building blocks: navigation, footer, the scroll hero, and the fullscreen lightbox photo viewer.</li>
+    <li><strong>Data</strong> — typed content files (photo collections, album metadata, hero captions) kept separate from presentation, so updating content never means touching layout code.</li>
+    <li><strong>Hooks</strong> — small reusable behaviours (e.g. scroll-position and scroll-reveal logic).</li>
+    <li><strong>Styles</strong> — a central design-token stylesheet plus one stylesheet per page/feature.</li>
+  </ul>
+  <p>Styling is driven by <strong>CSS custom properties</strong> (variables) for colour,
+  typography, spacing and motion. Because every colour and font flows from a single token block,
+  a site-wide change — such as the recent switch from a dark theme to a clean white theme — is a
+  small, low-risk edit rather than a hunt across dozens of files.</p>
+</section>
+
+<section>
+  <h2><span class="num">04</span>Design Reasoning</h2>
+
+  <h3>A white, minimal canvas</h3>
+  <p>The site uses a white background with near-black text and a single warm taupe accent. This
+  is intentional: a neutral, low-noise canvas maximises contrast against the photography and
+  lets each image read clearly without competing with the interface. The minimalism is a
+  feature, not an absence of design — it directs all attention to the work.</p>
+
+  <h3>An interactive, scroll-driven hero</h3>
+  <p>The home page opens with an animated hero: the photographs assemble on load and then morph
+  as the visitor scrolls, while the accompanying captions cycle through the brand's services
+  (Events, Portraits, Corporate, Brand, Festivals). This does three jobs at once — it makes a
+  memorable first impression, it showcases the breadth of work immediately, and it communicates
+  what the brand offers without a wall of text.</p>
+
+  <h3>Frictionless viewing</h3>
+  <p>Any photograph can be clicked to open in a fullscreen lightbox with keyboard arrows, swipe
+  support and a counter. Visitors can study the actual work — the core purpose of the site —
+  with zero friction.</p>
+
+  <h3>Accessibility &amp; inclusivity</h3>
+  <p>Rich motion is balanced with care for the visitor:</p>
+  <ul>
+    <li>A <strong>reduced-motion fallback</strong> respects the operating-system setting and skips the scroll-hijacking animation for users who are sensitive to motion.</li>
+    <li>A visible <strong>skip control</strong> lets anyone bypass the intro.</li>
+    <li>Semantic headings, descriptive <strong>alt text</strong> on every image, and full keyboard support in the lightbox keep the site usable for assistive technology.</li>
+  </ul>
+
+  <h3>Performance</h3>
+  <p>Photography sites live or die on load speed. The build serves an optimised, compressed
+  bundle, and every photo exists in two sizes — a small thumbnail for grids and animation, and a
+  full-resolution version loaded only when a visitor opens it. Images are lazy-loaded, so the
+  browser never downloads more than it needs.</p>
+
+  <h3>Responsive by design</h3>
+  <p>Layouts, the hero geometry, and typography all adapt across phone, tablet and desktop using
+  fluid sizing and breakpoints, so the experience holds up wherever the brand is discovered —
+  which, for a creative business, is most often on a phone.</p>
+</section>
+
+<section class="avoid">
+  <h2><span class="num">05</span>Why This Website Exists</h2>
+  <p>Beyond the technology, the site serves clear goals for the Hiccupviews brand:</p>
+  <ul>
+    <li><strong>Credibility.</strong> A polished, self-owned website signals professionalism in a way that a social-media feed alone cannot.</li>
+    <li><strong>Showcase.</strong> It presents the portfolio on the brand's own terms — full quality, no platform compression, no competing content.</li>
+    <li><strong>Conversion.</strong> Clear services and a direct booking/contact path turn interest into enquiries.</li>
+    <li><strong>Ownership.</strong> Unlike a third-party platform, the brand fully controls the presentation, the data and the experience.</li>
+  </ul>
+  <p>Every technical and design decision documented above ladders up to these goals: a fast,
+  beautiful, accessible site whose only job is to make the photography look as good as it
+  deserves to.</p>
+</section>
+
+<section class="avoid">
+  <h2><span class="num">06</span>Conclusion</h2>
+  <p>The Hiccupviews website pairs a lean, modern, industry-standard stack — React, TypeScript
+  and Vite — with carefully chosen tools for routing, animation and styling. The result is a
+  maintainable codebase and a fast, polished experience. The design language is deliberately
+  restrained so that the photography remains the hero, while interactive touches and a strong
+  attention to accessibility and performance give the site a distinctive, professional edge.</p>
+  <p>In short: <strong>the right tools, used with restraint, in service of the work.</strong></p>
+
+  <footer class="docfoot">
+    Hiccupviews — Technical &amp; Design Justification · Fontys Media Creation · June 2026
+  </footer>
+</section>
+
+</body>
+</html>

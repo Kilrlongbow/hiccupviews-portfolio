@@ -1,0 +1,170 @@
+/* ============================================
+   SERVICES PAGE
+   ============================================ */
+
+.services-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+/* ---- Service block ---- */
+
+.service-block {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 560px;
+  overflow: hidden;
+}
+
+.service-block--reverse {
+  direction: rtl;
+}
+
+.service-block--reverse > * {
+  direction: ltr;
+}
+
+/* Image side */
+.service-img-wrap {
+  position: relative;
+  overflow: hidden;
+}
+
+.service-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.8s var(--ease);
+}
+
+.service-block:hover .service-img {
+  transform: scale(1.04);
+}
+
+.service-img-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10,10,10,0.15);
+  transition: background var(--duration) var(--ease);
+}
+
+/* Content side */
+.service-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(2.5rem, 5vw, 5rem);
+  background: var(--white);
+}
+
+.service-number {
+  font-family: var(--font-serif);
+  font-size: 5rem;
+  font-weight: 300;
+  color: rgba(10,10,10,0.05);
+  line-height: 1;
+  margin-bottom: -1rem;
+}
+
+.service-icon {
+  width: 36px;
+  height: 36px;
+  stroke: var(--accent);
+  fill: none;
+  stroke-width: 1.2;
+  margin-bottom: 1rem;
+}
+
+.service-label {
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.75rem;
+}
+
+.service-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 300;
+  color: var(--off-white);
+  margin-bottom: 1.25rem;
+  line-height: 1.15;
+}
+
+.service-desc {
+  color: var(--neutral-lt);
+  margin-bottom: 2rem;
+  max-width: 400px;
+  line-height: 1.8;
+}
+
+.service-features {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 2.5rem;
+}
+
+.service-feature {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.85rem;
+  color: var(--neutral-lt);
+}
+
+.service-feature::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--accent);
+  flex-shrink: 0;
+}
+
+/* ---- CTA banner ---- */
+
+.services-cta {
+  padding-block: clamp(4rem, 8vw, 7rem);
+  text-align: center;
+  background: var(--surface);
+  color: var(--black);
+}
+
+.services-cta h2 {
+  color: var(--black);
+  margin-bottom: 1rem;
+}
+
+.services-cta p {
+  color: #555;
+  max-width: 480px;
+  margin-inline: auto;
+  margin-bottom: 2.5rem;
+}
+
+/* ---- Responsive ---- */
+
+@media (max-width: 900px) {
+  .service-block {
+    grid-template-columns: 1fr;
+    min-height: auto;
+  }
+
+  .service-block--reverse {
+    direction: ltr;
+  }
+
+  .service-img-wrap {
+    height: 320px;
+    order: 0;
+  }
+
+  .service-content {
+    order: 1;
+  }
+}

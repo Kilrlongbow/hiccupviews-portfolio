@@ -1,0 +1,208 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   SCROLL-DRIVEN HERO
+   ============================================ */
+
+.scroll-hero {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 38%, rgba(168, 130, 78, 0.1), transparent 55%),
+    radial-gradient(circle at 50% 100%, rgba(168, 130, 78, 0.05), transparent 60%),
+    var(--white);
+  touch-action: none; /* the hero owns wheel/touch while engaged */
+}
+
+.scroll-hero-stage {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  perspective: 1000px;
+}
+
+/* Intro logo */
+.scroll-hero-intro {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  pointer-events: none;
+}
+
+.scroll-hero-intro-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.scroll-hero-logo {
+  width: clamp(280px, 50vw, 560px);
+  height: auto;
+  display: block;
+}
+
+.scroll-hero-hint {
+  margin-top: 1.5rem;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--neutral);
+}
+
+/* Changing info */
+.scroll-hero-info {
+  position: absolute;
+  /* bottom-anchored just above the arch apex, shifted left of center */
+  top: 22%;
+  left: 30%;
+  transform: translate(-50%, -100%);
+  z-index: 10;
+  width: min(90vw, 520px);
+  text-align: center;
+  pointer-events: none;
+}
+
+.scroll-hero-info-label {
+  font-family: var(--font-sans);
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+}
+
+.scroll-hero-info-title {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-size: clamp(1.6rem, 3.4vw, 2.6rem);
+  line-height: 1.1;
+  color: var(--off-white);
+  margin-bottom: 0.7rem;
+}
+
+.scroll-hero-info-text {
+  font-size: clamp(0.9rem, 1.4vw, 1.05rem);
+  line-height: 1.7;
+  color: var(--neutral-lt);
+  margin-inline: auto;
+  max-width: 460px;
+}
+
+/* Cards */
+.scroll-hero-cards {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-hero-card {
+  cursor: pointer;
+}
+
+.scroll-hero-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.scroll-hero-face {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 6px;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  box-shadow: 0 8px 24px rgba(10, 10, 10, 0.18);
+}
+
+.scroll-hero-face--front {
+  background: var(--surface);
+}
+
+.scroll-hero-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.scroll-hero-img-shade {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.08);
+  transition: background var(--duration) var(--ease);
+}
+
+.scroll-hero-card:hover .scroll-hero-img-shade {
+  background: transparent;
+}
+
+.scroll-hero-face--back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem;
+  background: var(--accent);
+  transform: rotateY(180deg);
+}
+
+.scroll-hero-back-label {
+  font-family: var(--font-sans);
+  font-size: 0.5rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--white);
+  text-align: center;
+}
+
+/* Skip control */
+.scroll-hero-skip {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  background: transparent;
+  border: 1px solid rgba(10, 10, 10, 0.2);
+  padding: 0.5rem 1.4rem;
+  font-family: var(--font-sans);
+  font-size: 0.65rem;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--neutral);
+  cursor: pointer;
+  transition: all var(--duration) var(--ease);
+}
+
+.scroll-hero-skip:hover {
+  background: var(--black);
+  border-color: var(--black);
+  color: var(--white);
+}
+
+@media (max-width: 768px) {
+  /* mobile arch apex is lower; keep text centered on narrow screens */
+  .scroll-hero-info { top: 34%; left: 50%; }
+}
+
