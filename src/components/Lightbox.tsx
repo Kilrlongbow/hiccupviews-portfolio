@@ -2,6 +2,8 @@ import { useEffect, useRef } from 'react';
 
 export interface LightboxPhoto {
   src: string;
+  /** Optional full-resolution source; falls back to src. */
+  full?: string;
   alt: string;
 }
 
@@ -84,7 +86,7 @@ export default function Lightbox({ photos, index, onClose, onNavigate }: Lightbo
         {photo && (
           <img
             className="lightbox-img"
-            src={photo.src}
+            src={photo.full ?? photo.src}
             alt={photo.alt}
             draggable={false}
             // key forces the enter transition to replay on slide change

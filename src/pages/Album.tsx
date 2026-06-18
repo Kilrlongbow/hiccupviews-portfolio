@@ -41,7 +41,9 @@ export default function Album() {
               </svg>
               Back to Portfolio
             </Link>
-            <p>{album.description}</p>
+            {album.description.map((para, i) => (
+              <p key={i}>{para}</p>
+            ))}
           </div>
 
           <div className="album-stats">

@@ -18,21 +18,6 @@ export const heroSlides: HeroSlide[] = [
     title: 'Faces, honestly seen',
     text: 'Intimate, editorial portraits that hold character, authenticity and a quiet intensity.',
   },
-  {
-    label: 'Corporate',
-    title: 'Beyond the boardroom',
-    text: 'Conferences, launches and meetings documented as stories worth telling.',
-  },
-  {
-    label: 'Brand',
-    title: 'Identity in a single frame',
-    text: 'Editorial brand and product photography that communicates vision at a glance.',
-  },
-  {
-    label: 'Festivals',
-    title: 'A different perspective',
-    text: 'Multi-day festival coverage — vivid collections from the heart of the crowd.',
-  },
 ];
 
 export default heroSlides;

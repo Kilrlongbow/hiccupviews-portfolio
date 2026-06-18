@@ -3,10 +3,7 @@ import { useSearchParams } from 'react-router-dom';
 
 const EVENT_TYPES = [
   { value: 'event', label: 'Event Photography' },
-  { value: 'corporate', label: 'Corporate Event' },
-  { value: 'brand', label: 'Brand Campaign' },
   { value: 'portrait', label: 'Portrait Session' },
-  { value: 'festival', label: 'Festival Coverage' },
   { value: 'other', label: 'Other' },
 ];
 
@@ -91,7 +88,7 @@ export default function Contact() {
               </div>
               <div>
                 <p className="contact-method-label">Based in</p>
-                <span className="contact-method-value">Amsterdam, Netherlands</span>
+                <span className="contact-method-value">Eindhoven, Netherlands</span>
               </div>
             </div>
           </div>

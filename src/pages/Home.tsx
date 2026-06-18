@@ -22,37 +22,6 @@ const SERVICES = [
       </>
     ),
   },
-  {
-    title: 'Corporate',
-    desc: 'Conferences, launches, meetings',
-    icon: (
-      <>
-        <rect x="2" y="3" width="20" height="14" rx="2" />
-        <path d="M8 21h8M12 17v4" />
-      </>
-    ),
-  },
-  {
-    title: 'Brand',
-    desc: 'Campaigns, products, identity',
-    icon: (
-      <>
-        <path d="M12 2L2 7l10 5 10-5-10-5z" />
-        <path d="M2 17l10 5 10-5M2 12l10 5 10-5" />
-      </>
-    ),
-  },
-  {
-    title: 'Festivals',
-    desc: 'Multi-day festival coverage',
-    icon: (
-      <>
-        <path d="M3 18v-6a9 9 0 0 1 18 0v6" />
-        <path d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3z" />
-        <path d="M3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z" />
-      </>
-    ),
-  },
 ];
 
 export default function Home() {
@@ -164,7 +133,7 @@ export default function Home() {
             className="reveal reveal-delay-2"
             style={{ maxWidth: 440, marginInline: 'auto', marginBottom: '2.5rem' }}
           >
-            Whether it's an intimate portrait or a full festival — we're here to capture it.
+            Whether it's an intimate portrait or a room full of people — we're here to capture it.
           </p>
           <div
             className="reveal reveal-delay-3"

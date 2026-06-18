@@ -2,31 +2,6 @@
    ABOUT PAGE
    ============================================ */
 
-/* Full-width intro image */
-.about-banner {
-  height: 70vh;
-  min-height: 400px;
-  position: relative;
-  overflow: hidden;
-}
-
-.about-banner-img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.about-banner-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to bottom,
-    transparent 40%,
-    rgba(10,10,10,0.7) 100%
-  );
-}
-
 /* ---- Story section ---- */
 
 .about-story {
@@ -102,45 +77,26 @@
   color: var(--neutral);
 }
 
-/* ---- Photographer portrait section ---- */
+/* ---- Photographer section ---- */
 
 .about-portrait {
   padding-block: var(--section-pad);
   background: var(--surface);
 }
 
-.about-portrait-inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: clamp(3rem, 6vw, 6rem);
-  align-items: center;
-}
-
-.about-portrait-img-wrap {
-  position: relative;
-}
-
-.about-portrait-img {
-  width: 100%;
-  aspect-ratio: 3 / 4;
-  object-fit: cover;
-  display: block;
-}
-
-.about-portrait-accent {
-  position: absolute;
-  bottom: -1rem;
-  right: -1rem;
-  width: 60%;
-  height: 60%;
-  border: 1px solid var(--accent);
-  z-index: -1;
-}
-
-.about-portrait-content {
+.about-photographer {
+  max-width: 720px;
+  margin-inline: auto;
+  text-align: center;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.about-photographer .about-bio {
+  text-align: left;
+  max-width: 600px;
 }
 
 .about-name {
@@ -204,15 +160,7 @@
   text-align: center;
   position: relative;
   overflow: hidden;
-}
-
-.about-cta-bg {
-  position: absolute;
-  inset: 0;
-  background-image: url('https://images.unsplash.com/photo-1524863479829-916d8e77f114?w=1920&q=70');
-  background-size: cover;
-  background-position: center;
-  opacity: 0.15;
+  background: radial-gradient(circle at 50% 120%, rgba(168, 130, 78, 0.12), transparent 55%);
 }
 
 .about-cta-content {
@@ -240,12 +188,6 @@
   .about-story-sticky {
     position: static;
   }
-
-  .about-portrait-inner {
-    grid-template-columns: 1fr;
-  }
-
-  .about-portrait-accent { display: none; }
 
   .about-values {
     grid-template-columns: 1fr;

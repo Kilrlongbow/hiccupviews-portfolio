@@ -12,6 +12,7 @@ import './styles/services.css';
 import './styles/about.css';
 import './styles/contact.css';
 import './styles/album.css';
+import './styles/albumstack.css';
 import './styles/lightbox.css';
 // Tailwind utilities (preflight disabled) + new sphere hero styles.
 import './index.css';
