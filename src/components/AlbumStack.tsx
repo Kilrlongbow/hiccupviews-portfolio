@@ -35,12 +35,23 @@ export default function AlbumStack({
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [reducedMotion, setReducedMotion] = useState(false);
+  // Touch / coarse-pointer devices flip with a horizontal swipe so that a
+  // vertical swipe still scrolls the page (no scroll trap).
+  const [coarse, setCoarse] = useState(false);
   const lastNav = useRef(0);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
     setReducedMotion(mq.matches);
     const onChange = () => setReducedMotion(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  useEffect(() => {
+    const mq = window.matchMedia('(pointer: coarse)');
+    setCoarse(mq.matches);
+    const onChange = () => setCoarse(mq.matches);
     mq.addEventListener('change', onChange);
     return () => mq.removeEventListener('change', onChange);
   }, []);
@@ -55,10 +66,11 @@ export default function AlbumStack({
     [total],
   );
 
-  // Contained wheel: scoped to this element (not window), non-passive so we can
-  // consume the gesture only while the pointer is over the stack.
+  // Contained wheel (desktop/fine pointers only): scoped to this element (not
+  // window), non-passive so we can consume the gesture only while the pointer
+  // is over the stack. Touch devices use a horizontal swipe instead.
   useEffect(() => {
-    if (reducedMotion) return;
+    if (reducedMotion || coarse) return;
     const el = containerRef.current;
     if (!el) return;
     const onWheel = (e: WheelEvent) => {
@@ -71,12 +83,14 @@ export default function AlbumStack({
     };
     el.addEventListener('wheel', onWheel, { passive: false });
     return () => el.removeEventListener('wheel', onWheel);
-  }, [cycle, reducedMotion]);
+  }, [cycle, reducedMotion, coarse]);
 
   const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
     const threshold = 50;
-    if (info.offset.y < -threshold) cycle(1);
-    else if (info.offset.y > threshold) cycle(-1);
+    // Touch: horizontal swipe (left → next). Desktop: vertical drag (up → next).
+    const offset = coarse ? info.offset.x : info.offset.y;
+    if (offset < -threshold) cycle(1);
+    else if (offset > threshold) cycle(-1);
   };
 
   const open = () => navigate(`/album/${slug}`);
@@ -153,8 +167,10 @@ export default function AlbumStack({
               }}
               transition={{ type: 'spring', stiffness: 300, damping: 30, mass: 1 }}
               style={{ zIndex: style.zIndex }}
-              drag={isCurrent ? 'y' : false}
-              dragConstraints={{ top: 0, bottom: 0 }}
+              drag={isCurrent ? (coarse ? 'x' : 'y') : false}
+              dragConstraints={
+                coarse ? { left: 0, right: 0 } : { top: 0, bottom: 0 }
+              }
               dragElastic={0.2}
               onDragEnd={handleDragEnd}
               onTap={isCurrent ? open : undefined}
@@ -216,7 +232,9 @@ export default function AlbumStack({
         </div>
       </div>
 
-      <p className="album-stack-hint">Scroll or drag · click to open</p>
+      <p className="album-stack-hint">
+        {coarse ? 'Swipe or tap to open' : 'Scroll or drag · click to open'}
+      </p>
     </div>
   );
 }

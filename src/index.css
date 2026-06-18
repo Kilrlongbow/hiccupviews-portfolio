@@ -9,6 +9,7 @@
 .scroll-hero {
   position: relative;
   height: 100vh;
+  height: 100dvh; /* fit the dynamic viewport so the mobile URL bar doesn't clip it */
   overflow: hidden;
   background:
     radial-gradient(circle at 50% 38%, rgba(168, 130, 78, 0.1), transparent 55%),
