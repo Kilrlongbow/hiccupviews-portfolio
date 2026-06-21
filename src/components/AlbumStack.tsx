@@ -15,7 +15,7 @@ interface AlbumStackProps {
 const NAV_COOLDOWN = 400; // ms between card changes
 
 /**
- * AlbumStack — an interactive 3D vertical stack of an album's photos. Scroll
+ * AlbumStack: an interactive 3D vertical stack of an album's photos. Scroll
  * (while hovered) or drag to cycle cards; click/tap the front card to open the
  * full album. Contained: the wheel listener is scoped to this element, so the
  * surrounding page scrolls normally. Falls back to a static cover when the user

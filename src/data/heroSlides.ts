@@ -11,7 +11,7 @@ export const heroSlides: HeroSlide[] = [
   {
     label: 'Events',
     title: 'Nights worth remembering',
-    text: 'Concerts, parties and cultural gatherings — captured with energy, exactly as they unfold.',
+    text: 'Concerts, parties and cultural gatherings, captured with energy, exactly as they unfold.',
   },
   {
     label: 'Portraits',

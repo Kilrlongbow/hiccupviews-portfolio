@@ -9,9 +9,9 @@ export default function Album() {
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
   useEffect(() => {
-    document.title = `${album.title} — Hiccupviews`;
+    document.title = `${album.title} · Hiccupviews`;
     return () => {
-      document.title = 'Hiccupviews — Photography & Media';
+      document.title = 'Hiccupviews · Photography & Media';
     };
   }, [album.title]);
 

@@ -133,7 +133,7 @@ export default function Home() {
             className="reveal reveal-delay-2"
             style={{ maxWidth: 440, marginInline: 'auto', marginBottom: '2.5rem' }}
           >
-            Whether it's an intimate portrait or a room full of people — we're here to capture it.
+            Whether it's an intimate portrait or a room full of people, we're here to capture it.
           </p>
           <div
             className="reveal reveal-delay-3"

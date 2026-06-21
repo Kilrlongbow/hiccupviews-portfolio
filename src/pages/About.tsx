@@ -37,12 +37,12 @@ export default function About() {
               </p>
               <p>
                 It's a creative photography practice rooted in Eindhoven, focused on event and
-                portrait photography. My work spans the full spectrum of human gathering — from
+                portrait photography. My work spans the full spectrum of human gathering, from
                 intimate portrait sessions to the quiet, unguarded moments inside a crowded room.
               </p>
               <p>
                 What sets the work apart isn't just technical skill. It's perspective. I approach
-                every assignment with curiosity and a filmmaker's eye — looking for the story within
+                every assignment with curiosity and a filmmaker's eye, looking for the story within
                 the story, the detail that reveals the whole.
               </p>
               <p>
@@ -52,8 +52,8 @@ export default function About() {
 
               <div className="about-values">
                 {[
-                  ['Authenticity', "I don't construct moments — I reveal them. Real energy, real emotion."],
-                  ['Craft', 'Every frame is intentional. Lighting, composition, timing — all considered.'],
+                  ['Authenticity', "I don't construct moments. I reveal them. Real energy, real emotion."],
+                  ['Craft', 'Every frame is intentional. Lighting, composition, timing, all considered.'],
                   ['Presence', "I blend into every environment to capture what's real, not what's posed."],
                   ['Delivery', 'Fast turnaround, consistent quality, clear communication throughout.'],
                 ].map(([title, body]) => (
@@ -80,7 +80,7 @@ export default function About() {
             <div className="about-bio">
               <p>
                 I'm Eugene Chivurayise, the photographer behind Hiccupviews. I'm based in Eindhoven,
-                where I spend most of my time photographing people — at events, in portrait sessions,
+                where I spend most of my time photographing people: at events, in portrait sessions,
                 and everywhere the two overlap.
               </p>
               <p>
@@ -89,7 +89,7 @@ export default function About() {
                 I'm less interested in the perfect pose than in what's real.
               </p>
               <p>
-                Whether it's a room full of people or a single face, my goal is the same — to make
+                Whether it's a room full of people or a single face, my goal is the same: to make
                 images that still feel like the moment they came from.
               </p>
             </div>
@@ -121,7 +121,7 @@ export default function About() {
           <p className="section-label">Let's Collaborate</p>
           <h2 style={{ marginBottom: '1rem' }}>Let's work together.</h2>
           <p>
-            Whether you have a brief or just an idea — get in touch and let's build something worth
+            Whether you have a brief or just an idea, get in touch and let's build something worth
             remembering.
           </p>
           <div

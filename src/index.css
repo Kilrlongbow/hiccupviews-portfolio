@@ -66,14 +66,24 @@
 /* Changing info */
 .scroll-hero-info {
   position: absolute;
-  /* bottom-anchored just above the arch apex, shifted left of center */
+  /* full-width band, anchored just above the arch apex */
   top: 22%;
-  left: 30%;
-  transform: translate(-50%, -100%);
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  padding-inline: 1.5rem;
+  /* vertical anchor only — horizontal centering is handled by flex so it
+     survives the inline transform framer-motion writes on the inner block */
+  transform: translateY(-100%);
   z-index: 10;
-  width: min(90vw, 520px);
-  text-align: center;
   pointer-events: none;
+}
+
+.scroll-hero-info-inner {
+  width: min(90vw, 520px);
+  max-width: 100%;
+  text-align: center;
 }
 
 .scroll-hero-info-label {
@@ -203,7 +213,7 @@
 }
 
 @media (max-width: 768px) {
-  /* mobile arch apex is lower; keep text centered on narrow screens */
-  .scroll-hero-info { top: 34%; left: 50%; }
+  /* mobile arch apex is lower; drop the text band so it clears the arc */
+  .scroll-hero-info { top: 34%; }
 }
 

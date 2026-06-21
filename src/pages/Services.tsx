@@ -16,8 +16,8 @@ const SERVICES: ServiceBlock[] = [
     title: 'Event Photography',
     type: 'event',
     img: '/photos/events/KLR02385-full.jpg',
-    alt: 'Event photography — crowd at a live event',
-    desc: 'We document events through both the energy and the intimacy within them — preserving not just what happened, but how it felt. Every event becomes a visual memory built from authentic interactions.',
+    alt: 'Event photography, crowd at a live event',
+    desc: 'We document events through both the energy and the intimacy within them, preserving not just what happened but how it felt. Every event becomes a visual memory built from authentic interactions.',
     features: [
       'Concerts & live performances',
       'Private parties & gatherings',
@@ -31,7 +31,7 @@ const SERVICES: ServiceBlock[] = [
     type: 'portrait',
     img: '/photos/portraits/KLR00636-full.jpg',
     alt: 'Portrait session',
-    desc: 'Intimate, editorial portraits that capture people as they are rather than a version of who they should be. The goal is not perfection but presence — expression, environment, and the details that make someone feel human.',
+    desc: 'Intimate, editorial portraits that capture people as they are rather than a version of who they should be. The goal is not perfection but presence: expression, environment, and the details that make someone feel human.',
     features: [
       'Individual & group portraits',
       'Professional headshots',
@@ -50,7 +50,7 @@ export default function Services() {
           <h1>Services</h1>
           <div className="divider divider--center"></div>
           <p>
-            From intimate portrait sessions to full-scale event coverage — we bring the same
+            From intimate portrait sessions to full-scale event coverage, we bring the same
             creative eye to every assignment.
           </p>
         </div>
@@ -90,7 +90,7 @@ export default function Services() {
       <div className="services-cta reveal">
         <h2>Every project starts with a conversation.</h2>
         <p>
-          Tell us about your upcoming event or project — we'll put together a custom proposal
+          Tell us about your upcoming event or project and we'll put together a custom proposal
           tailored to your needs.
         </p>
         <Link to="/contact" className="btn btn--dark">

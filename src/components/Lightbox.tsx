@@ -15,7 +15,7 @@ interface LightboxProps {
   onNavigate: (index: number) => void;
 }
 
-/** Fullscreen photo viewer — ports V1 lightbox.js (keys, swipe, counter, backdrop). */
+/** Fullscreen photo viewer. Ports V1 lightbox.js (keys, swipe, counter, backdrop). */
 export default function Lightbox({ photos, index, onClose, onNavigate }: LightboxProps) {
   const open = index !== null;
   const current = index ?? 0;

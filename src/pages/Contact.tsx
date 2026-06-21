@@ -20,7 +20,7 @@ export default function Contact() {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSending(true);
-    // Simulated send (mirrors V1 main.js — no backend).
+    // Simulated send (mirrors V1 main.js, no backend).
     setTimeout(() => {
       setSending(false);
       setSent(true);
@@ -43,7 +43,7 @@ export default function Contact() {
         <aside className="contact-info reveal" aria-label="Contact information">
           <h2 className="contact-info-title">Let's make something great.</h2>
           <p className="contact-info-desc">
-            Whether you have a fully detailed brief or just a vague idea — get in touch. We'll figure
+            Whether you have a fully detailed brief or just a vague idea, get in touch. We'll figure
             out the rest together.
           </p>
 

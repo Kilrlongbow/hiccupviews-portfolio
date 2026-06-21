@@ -21,8 +21,8 @@ interface Target {
   opacity: number;
 }
 
-const IMAGES = sphereImages;
-const TOTAL_IMAGES = IMAGES.length;
+// Mobile shows a lighter subset of the sphere photos (see `images` below).
+const MOBILE_IMAGE_COUNT = 12;
 const MAX_SCROLL = 3000; // virtual scroll range (wheel/touch delta accumulated)
 
 const IMG_WIDTH = 64;
@@ -94,6 +94,7 @@ export default function ScrollHero() {
   const [phase, setPhase] = useState<Phase>('scatter');
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const [reducedMotion, setReducedMotion] = useState(false);
+  const [isMobileView, setIsMobileView] = useState(false);
   const [engaged, setEngaged] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState<number | null>(null);
 
@@ -101,6 +102,13 @@ export default function ScrollHero() {
   const engagedRef = useRef(false);
   const scrollRef = useRef(0);
   const lightboxOpenRef = useRef(false);
+
+  // Mobile shows fewer photos so the circle/arc isn't crowded on small screens.
+  const images = useMemo(
+    () => (isMobileView ? sphereImages.slice(0, MOBILE_IMAGE_COUNT) : sphereImages),
+    [isMobileView],
+  );
+  const total = images.length;
 
   const virtualScroll = useMotionValue(0);
 
@@ -115,9 +123,11 @@ export default function ScrollHero() {
   const mouseX = useMotionValue(0);
   const smoothMouseX = useSpring(mouseX, { stiffness: 30, damping: 20 });
 
-  // Logo + info opacity tied to morph.
-  const logoOpacity = useTransform(smoothMorph, [0, 0.4], [1, 0]);
-  const logoY = useTransform(smoothMorph, [0, 0.4], [0, -20]);
+  // Logo + info opacity tied to morph. On mobile the centered logo fades out
+  // almost immediately once scrolling starts (tighter range).
+  const logoFadeRange = isMobileView ? [0, 0.15] : [0, 0.4];
+  const logoOpacity = useTransform(smoothMorph, logoFadeRange, [1, 0]);
+  const logoY = useTransform(smoothMorph, logoFadeRange, [0, -20]);
   const contentOpacity = useTransform(smoothMorph, [0.75, 1], [0, 1]);
   const contentY = useTransform(smoothMorph, [0.75, 1], [20, 0]);
 
@@ -160,6 +170,15 @@ export default function ScrollHero() {
     const ro = new ResizeObserver(set);
     ro.observe(el);
     return () => ro.disconnect();
+  }, []);
+
+  /* --- mobile breakpoint (drives photo count + logo fade) --- */
+  useEffect(() => {
+    const mq = window.matchMedia('(max-width: 768px)');
+    setIsMobileView(mq.matches);
+    const onChange = () => setIsMobileView(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
   }, []);
 
   /* --- scroll-jack wheel + touch --- */
@@ -265,14 +284,14 @@ export default function ScrollHero() {
   /* --- scatter positions --- */
   const scatterPositions = useMemo<Target[]>(
     () =>
-      IMAGES.map(() => ({
+      images.map(() => ({
         x: (Math.random() - 0.5) * 1500,
         y: (Math.random() - 0.5) * 1000,
         rotation: (Math.random() - 0.5) * 180,
         scale: 0.6,
         opacity: 0,
       })),
-    [],
+    [images],
   );
 
   // Active info step from shuffle progress.
@@ -300,8 +319,8 @@ export default function ScrollHero() {
   }, [lightboxIndex]);
 
   const lightboxPhotos = useMemo(
-    () => IMAGES.map((img) => ({ src: img.full ?? img.src, alt: img.alt })),
-    [],
+    () => images.map((img) => ({ src: img.full ?? img.src, alt: img.alt })),
+    [images],
   );
 
   return (
@@ -321,35 +340,37 @@ export default function ScrollHero() {
         </motion.div>
 
         {/* Changing info (fades in with the arc) */}
-        <motion.div
-          style={{ opacity: contentOpacity as MotionValue<number>, y: contentY }}
-          className="scroll-hero-info"
-        >
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={activeStep}
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -12 }}
-              transition={{ duration: 0.4 }}
-            >
-              <p className="scroll-hero-info-label">{slide.label}</p>
-              <h1 className="scroll-hero-info-title">{slide.title}</h1>
-              <p className="scroll-hero-info-text">{slide.text}</p>
-            </motion.div>
-          </AnimatePresence>
-        </motion.div>
+        <div className="scroll-hero-info">
+          <motion.div
+            style={{ opacity: contentOpacity as MotionValue<number>, y: contentY }}
+            className="scroll-hero-info-inner"
+          >
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={activeStep}
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -12 }}
+                transition={{ duration: 0.4 }}
+              >
+                <p className="scroll-hero-info-label">{slide.label}</p>
+                <h1 className="scroll-hero-info-title">{slide.title}</h1>
+                <p className="scroll-hero-info-text">{slide.text}</p>
+              </motion.div>
+            </AnimatePresence>
+          </motion.div>
+        </div>
 
         {/* Cards */}
         <div className="scroll-hero-cards">
-          {IMAGES.map((img, i) => {
+          {images.map((img, i) => {
             let target: Target = { x: 0, y: 0, rotation: 0, scale: 1, opacity: 1 };
 
             if (phase === 'scatter') {
               target = scatterPositions[i];
             } else if (phase === 'line') {
               const spacing = 70;
-              const totalW = TOTAL_IMAGES * spacing;
+              const totalW = total * spacing;
               target = { x: i * spacing - totalW / 2, y: 0, rotation: 0, scale: 1, opacity: 1 };
             } else {
               const isMobile = containerSize.width < 768;
@@ -357,7 +378,7 @@ export default function ScrollHero() {
 
               // Circle
               const circleRadius = Math.min(minDim * 0.35, 330);
-              const circleAngle = (i / TOTAL_IMAGES) * 360;
+              const circleAngle = (i / total) * 360;
               const circleRad = (circleAngle * Math.PI) / 180;
               const circlePos = {
                 x: Math.cos(circleRad) * circleRadius,
@@ -372,7 +393,7 @@ export default function ScrollHero() {
               const arcCenterY = arcApexY + arcRadius;
               const spreadAngle = isMobile ? 100 : 130;
               const startAngle = -90 - spreadAngle / 2;
-              const step = spreadAngle / (TOTAL_IMAGES - 1);
+              const step = spreadAngle / (total - 1);
               const maxRotation = spreadAngle * 0.8;
               const boundedRotation = -scrollProgress * maxRotation;
               const arcAngle = startAngle + i * step + boundedRotation;

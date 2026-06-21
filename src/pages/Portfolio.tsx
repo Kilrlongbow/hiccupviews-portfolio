@@ -11,7 +11,7 @@ export default function Portfolio() {
           <h1>Portfolio</h1>
           <div className="divider divider--center"></div>
           <p>
-            Two bodies of work we’re focused on right now — intimate portraits and the quiet,
+            Two bodies of work we’re focused on right now: intimate portraits and the quiet,
             unguarded moments inside events.
           </p>
         </div>
