@@ -44,7 +44,7 @@ export default function Nav() {
         aria-label="Main navigation"
       >
         <Link to="/" className="nav-logo" aria-label="Hiccupviews home">
-          <img src="/logo.png" alt="Hiccupviews" className="nav-logo-img" />
+          <img src="/logo-icon.png" alt="Hiccupviews" className="nav-logo-img" />
         </Link>
 
         <div className="nav-links">
