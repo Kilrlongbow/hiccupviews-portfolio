@@ -23,8 +23,17 @@ interface Target {
   opacity: number;
 }
 
-// Mobile shows a lighter subset of the sphere photos (see `images` below).
-const MOBILE_IMAGE_COUNT = 12;
+// Mobile shows a subset of the sphere photos (see `images` below).
+const MOBILE_IMAGE_COUNT = 18;
+// Mobile cards are drawn smaller in the intro circle so they all fit the ring.
+const MOBILE_CIRCLE_SCALE = 0.75;
+// Mobile arc: fixed angle between neighbouring cards (the strip scrolls past the screen).
+const MOBILE_ARC_STEP = 9.2;
+// Mobile touch: scroll gain and fling momentum (per-16ms decay).
+const TOUCH_GAIN = 1.6;
+const FLING_DECAY = 0.95;
+// Fixed site header height (nav.css: 38px logo + 1.5rem padding top/bottom).
+const NAV_HEIGHT = 86;
 const MAX_SCROLL = 3000; // virtual scroll range (wheel/touch delta accumulated)
 
 const IMG_WIDTH = 64;
@@ -54,15 +63,18 @@ const LOGO_MAX_WIDTH = 560;
 const RING_GAP = 16;
 const INFO_GAP = 20;
 
+const isMobileSize = (size: Size) => size.width < 768;
 const circleRadiusFor = (size: Size) => Math.min(Math.min(size.width, size.height) * 0.35, 330);
+const circleScaleFor = (size: Size) => (isMobileSize(size) ? MOBILE_CIRCLE_SCALE : 1);
 
 /** Bottom arc ("rainbow", convex up) geometry, relative to the stage centre. */
 function arcGeometry(size: Size) {
-  const isMobile = size.width < 768;
+  const isMobile = isMobileSize(size);
   const baseRadius = Math.min(size.width, size.height * 1.5);
   const arcRadius = baseRadius * (isMobile ? 1.4 : 1.1);
-  const arcApexY = size.height * (isMobile ? 0.38 : 0.28);
+  const arcApexY = size.height * (isMobile ? 0.3 : 0.28);
   return {
+    isMobile,
     arcRadius,
     arcApexY,
     arcCenterY: arcApexY + arcRadius,
@@ -76,7 +88,7 @@ function arcGeometry(size: Size) {
  * ring of cards: solves (w/2)^2 + ((a*w + hint)/2)^2 = inner^2 for w.
  */
 function logoWidthFor(size: Size) {
-  const inner = circleRadiusFor(size) - IMG_HEIGHT / 2 - RING_GAP;
+  const inner = circleRadiusFor(size) - (IMG_HEIGHT / 2) * circleScaleFor(size) - RING_GAP;
   if (inner <= 0) return 0;
   const a = LOGO_ASPECT;
   const h = LOGO_HINT_BLOCK;
@@ -128,10 +140,20 @@ function computeTarget(
   const circleRotation = normalizeAngle(circleAngle + 90);
 
   // Bottom arc
-  const { arcRadius, arcCenterY, spreadAngle, arcScale } = arcGeometry(size);
-  const startAngle = -90 - spreadAngle / 2;
-  const step = spreadAngle / (total - 1);
-  const arcAngle = startAngle + i * step - progress * spreadAngle * 0.8;
+  const { isMobile, arcRadius, arcCenterY, spreadAngle, arcScale } = arcGeometry(size);
+  let arcAngle: number;
+  if (isMobile) {
+    // A strip longer than the screen that scrolls through the visible window:
+    // first card at the left edge at progress 0, last card at the right edge at 1.
+    const halfView = (Math.asin(Math.min(1, size.width / 2 / arcRadius)) * 180) / Math.PI;
+    const strip = MOBILE_ARC_STEP * (total - 1);
+    const travel = Math.max(0, strip - 2 * halfView);
+    arcAngle = -90 - halfView + i * MOBILE_ARC_STEP - progress * travel;
+  } else {
+    const startAngle = -90 - spreadAngle / 2;
+    const step = spreadAngle / (total - 1);
+    arcAngle = startAngle + i * step - progress * spreadAngle * 0.8;
+  }
   const arcRad = (arcAngle * Math.PI) / 180;
   // Take the shortest way round from the circle's rotation to the arc's.
   const arcRotation = circleRotation + normalizeAngle(arcAngle + 90 - circleRotation);
@@ -141,7 +163,7 @@ function computeTarget(
     x: lerp(Math.cos(circleRad) * circleRadius, Math.cos(arcRad) * arcRadius + parallax, m),
     y: lerp(Math.sin(circleRad) * circleRadius, Math.sin(arcRad) * arcRadius + arcCenterY, m),
     rotation: lerp(circleRotation, arcRotation, m),
-    scale: lerp(1, arcScale, m),
+    scale: lerp(circleScaleFor(size), arcScale, m),
     opacity: 1,
   };
 
@@ -288,9 +310,23 @@ export default function ScrollHero() {
 
   // Logo + info opacity tied to morph. On mobile the centered logo fades out
   // almost immediately once scrolling starts (tighter range).
-  const logoFadeRange = isMobileView ? [0, 0.15] : [0, 0.4];
-  const logoOpacity = useTransform(smoothMorph, logoFadeRange, [1, 0]);
-  const logoY = useTransform(smoothMorph, logoFadeRange, [0, -20]);
+  // On mobile the logo stays and glides up into the gap between header and info text.
+  const infoRef = useRef<HTMLDivElement>(null);
+  const [infoHeight, setInfoHeight] = useState(0);
+  const logoOpacity = useTransform(smoothMorph, (m) =>
+    isMobileView ? 1 : 1 - clamp(m / 0.4, 0, 1),
+  );
+  const logoY = useTransform(smoothMorph, (m) => {
+    if (!isMobileView) return lerp(0, -20, clamp(m / 0.4, 0, 1));
+    if (!containerSize.height) return 0;
+    const logoH = logoWidthFor(containerSize) * LOGO_ASPECT;
+    const textTop = arcTopFor(containerSize) - INFO_GAP - infoHeight;
+    const targetCenter = Math.max(NAV_HEIGHT + logoH / 2, (NAV_HEIGHT + textTop) / 2);
+    // At rest the logo sits half a hint-block above the stage centre.
+    const restCenter = containerSize.height / 2 - LOGO_HINT_BLOCK / 2;
+    return lerp(0, targetCenter - restCenter, clamp(m, 0, 1));
+  });
+  const hintOpacity = useTransform(smoothMorph, [0, 0.3], [1, 0]);
   const contentOpacity = useTransform(smoothMorph, [0.75, 1], [0, 1]);
   const contentY = useTransform(smoothMorph, [0.75, 1], [20, 0]);
 
@@ -360,7 +396,16 @@ export default function ScrollHero() {
     };
   }, []);
 
-  /* --- mobile breakpoint (drives photo count + logo fade) --- */
+  /* --- info block height (mobile logo sits above it) --- */
+  useEffect(() => {
+    const el = infoRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => setInfoHeight(el.offsetHeight));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  /* --- mobile breakpoint (drives photo count + logo behaviour) --- */
   useEffect(() => {
     const mq = window.matchMedia('(max-width: 768px)');
     setIsMobileView(mq.matches);
@@ -416,9 +461,37 @@ export default function ScrollHero() {
       advance(clamp(delta, -MAX_WHEEL_STEP, MAX_WHEEL_STEP));
     };
 
+    // Fling: keep gliding after the finger lifts, like native scrolling.
     let touchY = 0;
+    let lastMoveT = 0;
+    let velocity = 0; // virtual px per ms
+    let flingRaf = 0;
+    const stopFling = () => cancelAnimationFrame(flingRaf);
+    const fling = () => {
+      let prev = performance.now();
+      const step = (now: number) => {
+        const dt = Math.min(now - prev, 64);
+        prev = now;
+        velocity *= Math.pow(FLING_DECAY, dt / 16);
+        if (!engagedRef.current || Math.abs(velocity) < 0.02) return;
+        const next = clamp(scrollRef.current + velocity * dt, 0, MAX_SCROLL);
+        scrollRef.current = next;
+        virtualScroll.set(next);
+        if (next === 0 || next === MAX_SCROLL) return; // stop at the ends; release needs a real swipe
+        flingRaf = requestAnimationFrame(step);
+      };
+      flingRaf = requestAnimationFrame(step);
+    };
+
     const onTouchStart = (e: TouchEvent) => {
+      stopFling();
+      velocity = 0;
       touchY = e.touches[0].clientY;
+      lastMoveT = e.timeStamp;
+    };
+    const onTouchEnd = (e: TouchEvent) => {
+      // Only fling if the finger was still moving when it lifted.
+      if (engagedRef.current && e.timeStamp - lastMoveT < 80) fling();
     };
     const onTouchMove = (e: TouchEvent) => {
       if (lightboxOpenRef.current) return; // lightbox owns input while open
@@ -433,13 +506,20 @@ export default function ScrollHero() {
         return;
       }
       e.preventDefault();
-      advance(delta);
+      const scaled = delta * TOUCH_GAIN;
+      const dt = Math.max(1, e.timeStamp - lastMoveT);
+      lastMoveT = e.timeStamp;
+      velocity = 0.8 * (scaled / dt) + 0.2 * velocity;
+      advance(scaled);
     };
 
     window.addEventListener('wheel', onWheel, { passive: false });
     window.addEventListener('touchstart', onTouchStart, { passive: false });
     window.addEventListener('touchmove', onTouchMove, { passive: false });
+    window.addEventListener('touchend', onTouchEnd);
     return () => {
+      stopFling();
+      window.removeEventListener('touchend', onTouchEnd);
       window.removeEventListener('wheel', onWheel);
       window.removeEventListener('touchstart', onTouchStart);
       window.removeEventListener('touchmove', onTouchMove);
@@ -518,7 +598,9 @@ export default function ScrollHero() {
               className="scroll-hero-logo"
               style={logoWidth ? { width: logoWidth } : undefined}
             />
-            <p className="scroll-hero-hint">Scroll to explore</p>
+            <motion.p className="scroll-hero-hint" style={{ opacity: hintOpacity }}>
+              Scroll to explore
+            </motion.p>
           </motion.div>
         </motion.div>
 
@@ -529,6 +611,7 @@ export default function ScrollHero() {
         >
           <motion.div
             style={{ opacity: contentOpacity as MotionValue<number>, y: contentY }}
+            ref={infoRef}
             className="scroll-hero-info-inner"
           >
             <AnimatePresence mode="wait">
