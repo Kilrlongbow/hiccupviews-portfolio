@@ -9,7 +9,7 @@
 .scroll-hero {
   position: relative;
   height: 100vh;
-  height: 100dvh; /* fit the dynamic viewport so the mobile URL bar doesn't clip it */
+  height: 100svh; /* small viewport: fits under the mobile URL bar and never resizes mid-animation */
   overflow: hidden;
   background:
     radial-gradient(circle at 50% 38%, rgba(168, 130, 78, 0.1), transparent 55%),
@@ -48,7 +48,8 @@
 }
 
 .scroll-hero-logo {
-  width: clamp(280px, 50vw, 560px);
+  /* fallback before the stage is measured; inline width then fits it inside the card ring */
+  width: clamp(160px, 40vw, 420px);
   height: auto;
   display: block;
 }
@@ -66,7 +67,8 @@
 /* Changing info */
 .scroll-hero-info {
   position: absolute;
-  /* full-width band, anchored just above the arch apex */
+  /* full-width band; its bottom edge sits just above the arch apex
+     (top is set inline from the arc geometry — 22% is the pre-measure fallback) */
   top: 22%;
   left: 0;
   right: 0;
@@ -125,6 +127,7 @@
 
 .scroll-hero-card {
   cursor: pointer;
+  will-change: transform, opacity;
 }
 
 .scroll-hero-card-inner {
@@ -210,10 +213,5 @@
   background: var(--black);
   border-color: var(--black);
   color: var(--white);
-}
-
-@media (max-width: 768px) {
-  /* mobile arch apex is lower; drop the text band so it clears the arc */
-  .scroll-hero-info { top: 34%; }
 }
 
