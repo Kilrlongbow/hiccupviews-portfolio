@@ -86,11 +86,12 @@ export default function AlbumStack({
   }, [cycle, reducedMotion, coarse]);
 
   const handleDragEnd = (_: MouseEvent | TouchEvent | PointerEvent, info: PanInfo) => {
-    const threshold = 50;
     // Touch: horizontal swipe (left → next). Desktop: vertical drag (up → next).
+    // A short, quick flick counts as well as a long drag.
     const offset = coarse ? info.offset.x : info.offset.y;
-    if (offset < -threshold) cycle(1);
-    else if (offset > threshold) cycle(-1);
+    const velocity = coarse ? info.velocity.x : info.velocity.y;
+    if (offset < -40 || velocity < -400) cycle(1);
+    else if (offset > 40 || velocity > 400) cycle(-1);
   };
 
   const open = () => navigate(`/album/${slug}`);
@@ -100,6 +101,20 @@ export default function AlbumStack({
     let diff = index - currentIndex;
     if (diff > total / 2) diff -= total;
     if (diff < -total / 2) diff += total;
+
+    // Touch: a horizontal fanned deck that matches the swipe direction and stays
+    // inside the screen (neighbours peek out from behind the front card).
+    if (coarse) {
+      const side = Math.sign(diff);
+      switch (Math.abs(diff)) {
+        case 0:
+          return { x: '0%', y: 0, scale: 1, opacity: 1, zIndex: 5, rotateX: 0, rotate: 0 };
+        case 1:
+          return { x: `${side * 16}%`, y: 0, scale: 0.9, opacity: 0.55, zIndex: 4, rotateX: 0, rotate: side * 3 };
+        default:
+          return { x: `${side * 30}%`, y: 0, scale: 0.8, opacity: 0, zIndex: 3, rotateX: 0, rotate: side * 6 };
+      }
+    }
 
     switch (diff) {
       case 0:
@@ -159,6 +174,8 @@ export default function AlbumStack({
               key={photo.src}
               className="album-stack-card"
               animate={{
+                x: 'x' in style ? style.x : '0%',
+                rotate: 'rotate' in style ? style.rotate : 0,
                 y: style.y,
                 scale: style.scale,
                 opacity: style.opacity,
@@ -171,7 +188,7 @@ export default function AlbumStack({
               dragConstraints={
                 coarse ? { left: 0, right: 0 } : { top: 0, bottom: 0 }
               }
-              dragElastic={0.2}
+              dragElastic={coarse ? 0.7 : 0.2}
               onDragEnd={handleDragEnd}
               onTap={isCurrent ? open : undefined}
               role={isCurrent ? 'button' : undefined}
@@ -233,7 +250,7 @@ export default function AlbumStack({
       </div>
 
       <p className="album-stack-hint">
-        {coarse ? 'Swipe or tap to open' : 'Scroll or drag · click to open'}
+        {coarse ? 'Swipe to browse · tap to open' : 'Scroll or drag · click to open'}
       </p>
     </div>
   );

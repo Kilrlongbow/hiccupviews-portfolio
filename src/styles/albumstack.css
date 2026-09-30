@@ -217,6 +217,35 @@
 @media (max-width: 768px) {
   .portfolio-stacks {
     grid-template-columns: 1fr;
-    gap: 1rem;
+    gap: 3rem;
+  }
+
+  /* Hairline + breathing room between the two albums */
+  .portfolio-stacks > * + * {
+    border-top: 1px solid rgba(10, 10, 10, 0.08);
+    padding-top: 3rem;
+  }
+
+  .album-stack {
+    padding-block: 0.5rem;
+  }
+
+  /* Card sized to the screen so the fanned neighbours stay inside the gutters */
+  .album-stack-viewport {
+    width: 100%;
+    height: calc(min(280px, 66vw) * 1.36 + 2rem);
+  }
+
+  .album-stack-card {
+    width: min(280px, 66vw);
+    height: calc(min(280px, 66vw) * 1.36);
+  }
+
+  .album-stack-controls {
+    margin-top: 1.25rem;
+  }
+
+  .album-stack-hint {
+    margin-top: 0.75rem;
   }
 }
