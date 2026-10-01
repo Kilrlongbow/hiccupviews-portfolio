@@ -1,5 +1,5 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { motion, type PanInfo } from 'framer-motion';
+import { motion, type PanInfo, type TapInfo } from 'framer-motion';
 import { Link, useNavigate } from 'react-router-dom';
 import type { AlbumPhoto } from '../data/albums';
 
@@ -13,6 +13,7 @@ interface AlbumStackProps {
 }
 
 const NAV_COOLDOWN = 400; // ms between card changes
+const TAP_SLOP = 10; // px a press may move and still count as a tap
 
 /**
  * AlbumStack: an interactive 3D vertical stack of an album's photos. Scroll
@@ -39,6 +40,10 @@ export default function AlbumStack({
   // vertical swipe still scrolls the page (no scroll trap).
   const [coarse, setCoarse] = useState(false);
   const lastNav = useRef(0);
+  // Swipe vs tap: framer's onTap still fires on release after a swipe, so track
+  // the press start and whether a drag happened, and only open on a real tap.
+  const pressStart = useRef({ x: 0, y: 0 });
+  const dragged = useRef(false);
 
   useEffect(() => {
     const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -95,6 +100,20 @@ export default function AlbumStack({
   };
 
   const open = () => navigate(`/album/${slug}`);
+
+  const handlePointerDown = (e: React.PointerEvent) => {
+    pressStart.current = { x: e.pageX, y: e.pageY };
+    dragged.current = false;
+  };
+
+  const handleTap = (_: MouseEvent | TouchEvent | PointerEvent, info: TapInfo) => {
+    const moved = Math.hypot(
+      info.point.x - pressStart.current.x,
+      info.point.y - pressStart.current.y,
+    );
+    if (dragged.current || moved > TAP_SLOP) return;
+    open();
+  };
 
   // Diff-based depth styling (ported from the reference VerticalImageStack).
   const getCardStyle = (index: number) => {
@@ -189,8 +208,12 @@ export default function AlbumStack({
                 coarse ? { left: 0, right: 0 } : { top: 0, bottom: 0 }
               }
               dragElastic={coarse ? 0.7 : 0.2}
+              onPointerDown={isCurrent ? handlePointerDown : undefined}
+              onDragStart={() => {
+                dragged.current = true;
+              }}
               onDragEnd={handleDragEnd}
-              onTap={isCurrent ? open : undefined}
+              onTap={isCurrent ? handleTap : undefined}
               role={isCurrent ? 'button' : undefined}
               tabIndex={isCurrent ? 0 : -1}
               onKeyDown={
